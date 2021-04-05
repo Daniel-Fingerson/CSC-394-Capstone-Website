@@ -1,0 +1,45 @@
+Installation steps:
+
+	0. Install latest versions of Python/PIP (Python 3.x)
+
+	1. Clone the repo
+		$ git clone https://github.com/Daniel-Fingerson/CSC-394-Capstone-Website.git
+
+
+
+	2. Activate virtual enviroment:
+		$ source env/bin/activate
+
+
+	3. Install Dependencies:
+		$ pip install -r requirements.txt
+
+Running (remember to activate virtual enviroment!!)
+
+	Run the Server:
+		$ python manage.py runserver
+
+
+Deploying to AWS via Elastic Beanstalk:
+	
+	Initialize EB CLI repository (last paramater can be anything as its a name):
+		$ eb init -p python django-eb-app
+
+
+Helpful Development Stuff
+
+	* Save virtual enviroment's depedencies to a requiremnts text file:
+		$ pip freeze > requirements.txt
+
+	* Install AWS via pip (for deploying the website to the web):
+		$ pip install awsebcli --upgrade --user
+
+	* Links to deployment process:
+		https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create-deploy-python-django.html
+
+		https://blackninjadojo.com/aws/elastic-beanstalk/2019/01/28/installing-and-configuring-the-elastic-beanstalk-cli-to-deploy-a-rails-application.html#:~:text=Update%20your%20macOS%20PATH%20to,covered%20by%20your%20PATH%20variable.
+
+
+To circumnavigate path variables with eb:
+	$ brew install awsebcli
+
