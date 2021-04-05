@@ -1,0 +1,22 @@
+<!--users/templates/users/dashboard.html-->
+
+{% extends 'CapstonewebApp/base_generic.html' %}
+
+{% block content %}
+Hello, {{ user.username|default:'Guest' }}!
+
+<b>
+Note that this will be a dashboard of the user's general profile
+
+<div>
+    {% if user.is_authenticated %}
+        <a href="{% url 'logout' %}">Logout</a>
+        <a href="{% url 'password_change' %}">Change password</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'register' %}">Create an Account</a>
+    {% endif %}
+</div>
+{% endblock %}
+
+
