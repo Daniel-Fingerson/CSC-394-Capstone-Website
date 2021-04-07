@@ -125,6 +125,28 @@ def recipeList(request):
 	return render(request, rootDir+'recipes.html',context=dataContext)
 
 
+
+def dashboard(request):
+    return render(request, rootDir+"dashboard.html")
+
+def register(request):
+    if request.method == "GET":
+        return render(
+            request, rootDir+"register.html",
+            {"form": RegisterForm}
+        )
+    elif request.method == "POST":
+        form = RegisterForm(request.POST)
+        
+        if form.is_valid():
+            user = form.save()
+            
+            login(request, user)
+            
+            return redirect(reverse("dashboard"))
+        else:
+        	return HttpResponse("Form failed to validate (usually indicitve of invalid password)...make a proper redirect")
+
 #Detailed overview of recipe
 def recipeOverview(request,recipeId):
 	#recipe_id = request.args['id']
