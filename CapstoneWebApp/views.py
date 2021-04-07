@@ -1,5 +1,7 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from CapstoneWebApp.forms import RegisterForm
+from django.contrib.auth import login
+from django.urls import reverse
 
 # Create your views here.
 from django.http import HttpResponse
@@ -11,8 +13,8 @@ import requests
 class Recipe:
 	def __init__(self):
 		self.title = "idk"
-
-rootDir = "CapstonewebApp/"
+#TODO make this dynamicly generated (or saved in a static dir/in settings)
+rootDir = "CSC-394-Capstone-Website/"
 url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com"
 headers = {
 		  'x-rapidapi-host': "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
@@ -26,12 +28,31 @@ def index(request):
 
 def test(request):
 
-	
-	
+
+
 
 	return render(request, rootDir+'index.html')
 
+def dashboard(request):
+    return render(request, rootDir+"dashboard.html")
 
+def register(request):
+    if request.method == "GET":
+        return render(
+            request, rootDir+"register.html",
+            {"form": RegisterForm}
+        )
+    elif request.method == "POST":
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            user = form.save()
+
+            login(request, user)
+
+            return redirect(reverse("dashboard"))
+        else:
+        	return HttpResponse("Form failed to validate (usually indicitve of invalid password)...make a proper redirect")
 
 
 def search(request):
@@ -52,25 +73,25 @@ def recipeList(request):
 
 	if request.GET.get('ingredients'):
 		print("you did it!")
-		
+
 		#TODO REMOVE IMEDIETLY!!!
-		
+
 		find = "/recipes/findByIngredients"
 		#find = "/recipes/random"
 
-		
+
 
 		#querystring = {"ingredients":"beef,flour,sugar","number":"5","ranking":"1","ignorePantry":"true"}
-		
+
 		ingredients = request.GET["ingredients"]
-		
+
 
 
 		querystring["ingredients"] = ingredients
 
 		querystring["tags"] = "vegan"
 
-		
+
 		print(ingredients)
 
 
@@ -109,7 +130,7 @@ def recipeOverview(request,recipeId):
 	#recipe_id = request.args['id']
 	recipe_id = recipeId
 
-	
+
 	recipe_info_endpoint = "/recipes/{0}/information".format(recipe_id)
 	ingedientsWidget = "/recipes/{0}/ingredientWidget".format(recipe_id)
 	equipmentWidget = "/recipes/{0}/equipmentWidget".format(recipe_id)
@@ -119,7 +140,7 @@ def recipeOverview(request,recipeId):
 		  }
 	recipe_info = requests.get(url + recipe_info_endpoint, headers=recipe_headers).json()
 	#recipe = recipe_info.json()
-	
+
 	querystring = {"defaultCss":"true", "showBacklink":"false"}
 
 	recipe_info['inregdientsWidget'] = requests.get(url + ingedientsWidget, headers=recipe_headers, params=querystring).text
@@ -146,11 +167,11 @@ def recipeOverview(request,recipeId):
 
 	print(ingredients.text)
 
-	
 
-	
+
+
 
 	contextRecipe = {"recipe":recipe}
-	
-	    
+
+
 	return render(request, rootDir+'recipe.html', context=contextRecipe)

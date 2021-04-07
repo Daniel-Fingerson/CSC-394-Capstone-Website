@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,8 +25,12 @@ SECRET_KEY = '3ibk&ct#(ae5drj0kz@afzfnw#@0qi4z#h$zh1!##_#!l4^j18'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["4d27f317a6d2.ngrok.io", "4acf1b7aa4b6.ngrok.io","127.0.0.1","django-env.eba-52xwiqzf.us-west-2.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["4d27f317a6d2.ngrok.io", "4acf1b7aa4b6.ngrok.io","127.0.0.1","django-env.eba-52xwiqzf.us-west-2.elasticbeanstalk.com","fingason.pythonanywhere.com"]
 
+
+STATIC_ROOT = "/home/fingason/CSC-394-Capstone-Website/static"
+# or, eg,
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 # Application definition
 
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 MIDDLEWARE = [
@@ -119,3 +124,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = "dashboard"

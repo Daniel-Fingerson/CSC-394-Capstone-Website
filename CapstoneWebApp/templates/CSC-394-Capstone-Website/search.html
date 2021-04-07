@@ -1,0 +1,36 @@
+{% extends 'CSC-394-Capstone-Website/base.html' %}
+{% block title %} Recipes searcher {% endblock %}
+{% block body %}
+
+<center>
+  <h2 style="padding-top: 3%;">
+      Search for recipes based off your available ingredients:  <br>
+  </h2>
+  <br><br>
+  <form action="/recipes">
+      <div class="input-group mb-3" style="max-width: 60%;">
+
+          <input type="text" class="form-control" placeholder="Apple, flour, sugar (Leave Blank to randomly generate)" aria-label="Ingredients" aria-describedby="button-addon2" name="ingredients">
+
+          <input type="number" class="form-control" placeholder="10 (default)" aria-label="QueryLength" aria-describedby="button-addon2" name="queryLength">
+
+          <
+
+          <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+          </div>
+
+
+      </div>
+
+<div>
+  <input type="text" class="form-control" placeholder="Refine search by type (dessert,vegetarian,salads ) " aria-label="Tags" aria-describedby="button-addon2" name="tags">
+</div>
+  </form>
+  <div>
+  <h5> <a href="/">Return to Index Page</a></h5>
+</div>
+</center>
+
+
+{% endblock %}
