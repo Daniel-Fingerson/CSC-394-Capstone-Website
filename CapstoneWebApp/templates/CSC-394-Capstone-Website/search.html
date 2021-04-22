@@ -1,4 +1,5 @@
 {% extends 'CSC-394-Capstone-Website/base.html' %}
+
 {% block title %} Recipes searcher {% endblock %}
 {% block body %}
 
@@ -6,6 +7,7 @@
   <h2 style="padding-top: 3%;">
       Search for recipes based off your available ingredients:  <br>
   </h2>
+  {% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
   <br><br>
   <form action="/recipes">
       <div class="input-group mb-3" style="max-width: 60%;">

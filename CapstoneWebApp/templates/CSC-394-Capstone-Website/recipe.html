@@ -6,8 +6,10 @@
   <div class="media">
   	<h1>
       {{recipe.title}} <br>
-      Total Time: {{recipe.readyInMinutes}} minutes
+      Total Time: {{recipe.readyInMinutes}} minutes <br>
+
     </h1>
+    <h5><a href="/recipe/add/{{ recipe.id }}/{{ recipe.title }}">Save Recipe</a></h5> <br>
 
 
       <img src="{{recipe.image}}" class="mr-3" alt="..." width="20%" height="20%">

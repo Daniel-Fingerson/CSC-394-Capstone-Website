@@ -12,8 +12,23 @@ urlpatterns = [
     path('recipes/', views.recipeList, name='recipeList'),
     path('recipe/<int:recipeId>/', views.recipeOverview, name='recipeOverview'),
 
+    
+
+
+
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/recipes/', views.userRecipeList, name='userRecipeList'),
+    path('recipe/add/<int:recipeId>/<str:recipeName>/', views.addRecipe, name='addRecipe'),
+    path('recipe/remove/<int:recipeId>/', views.removeRecipe, name='removeRecipe'),
+
+
     path('register/', views.register, name='register'),
 
     path('accounts/', include('django.contrib.auth.urls')),
+    path('social-auth/', include('social_django.urls', namespace="social")),
+    path('social-login/', views.socialLogin, name='socialLogin'),
+
+    #TODO make it have a second url paramaater that corresponds to the user ID (not necessary for testing purposes)
+    path('fitbitPage/', views.fitbitPage, name='fitbitPage'),
+    
 ]

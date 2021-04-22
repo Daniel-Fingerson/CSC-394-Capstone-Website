@@ -1,0 +1,18 @@
+{% extends 'CSC-394-Capstone-Website/base.html' %}
+{% block title %} Recipes searcher {% endblock %}
+{% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
+{% block body %}
+
+<div style="margin-left:35%;">
+  <ul class="list-unstyled">
+      {% for recipe in recipes %}
+          
+          <h5><a href="/recipe/{{ recipe.id }}">{{ recipe.name }}</a></h5>
+          <h5><a href="/recipe/remove/{{ recipe.id }}">Remove</a></h5>
+          <br>
+       {% empty %}
+    <li>Sorry, no recipes saved for this user.</li>
+      {% endfor %}
+  </ul>
+</div >
+{% endblock %}

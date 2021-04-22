@@ -23,7 +23,7 @@ from django.contrib.auth.models import User
 class Recipe(models.Model):
 	r_ID = models.IntegerField(max_length=6, primary_key=True)
 	name = models.CharField(max_length=128)
-	time = models.TimeField()
+	
 
 	def __str__(self):
 		return str(self.name)
@@ -61,6 +61,8 @@ class Profile(models.Model):
 
     def __str__(self):
     	return(self.user.username + "; First Name: " + self.user.first_name)
+
+    
 
 
 

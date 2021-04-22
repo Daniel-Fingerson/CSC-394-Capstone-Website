@@ -3,10 +3,23 @@ from CapstoneWebApp.forms import RegisterForm
 from django.contrib.auth import login
 from django.urls import reverse
 
+from bootstrap_modal_forms.generic import BSModalCreateView
+
+from CapstoneWebApp.models import Profile
+from CapstoneWebApp.models import Recipe as dbRecipe
+
+
+import fitbit
+import CapstoneWebApp.gather_keys_oauth2 as Oauth2
+import pandas as pd 
+import datetime
+
 # Create your views here.
 from django.http import HttpResponse
 
 import requests
+import spoonacular as sp
+api = sp.API("e49afb82519a407db4b10de35ddf7252")
 
 
 
@@ -22,15 +35,20 @@ headers = {
 		  }
 
 def index(request):
-    #return HttpResponse("Hello CSC394 Blue Group. You're at the group's index page .")
-    return render(request, rootDir+'index.html')
+	#return HttpResponse("Hello CSC394 Blue Group. You're at the group's index page .")
+	print("ahh")
+	if request.method == "GET":
+		print("its a get request")
+	elif request.method == "POST":
+		print("its a post request (most likely an Ouath redriect )")
+	return render(request, rootDir+'index.html')
 
 
 def test(request):
-
-
-
-
+	response = api.parse_ingredients("3.5 cups King Arthur flour", servings=1)
+	data = response.json()
+	print(data)
+	#print(data[0]['name'])
 	return render(request, rootDir+'index.html')
 
 def dashboard(request):
@@ -48,7 +66,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
 
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
             return redirect(reverse("dashboard"))
         else:
@@ -98,6 +116,8 @@ def recipeList(request):
 
 		response = requests.get((url+find), headers=headers, params = querystring)
 		data = response.json()
+		print("here it is")
+		print(data)
 
 		dataContext = {"recipes": data}
 		dataContext["specialParam"] =  "Number of results shown: " + str(queryLength)
@@ -124,10 +144,54 @@ def recipeList(request):
 
 	return render(request, rootDir+'recipes.html',context=dataContext)
 
+def userRecipeList(request):
+	user = request.user
+	uId = user.id
+	print(user)
+	print(uId)
+	profile = Profile.objects.get(user=uId)
+	print(profile)
+	myRecipes = profile.saved_recipes.all()
+	rList =[]
+	for i in range(len(myRecipes)):
+		rId = myRecipes[i].r_ID
+		rName = myRecipes[i].name
+		
+		#dataContext = [entry for entry in myRecipes]
+		#print(dataContext)
 
+		recipe = {"id":rId, "name":rName}
+
+		
+		rList.append(recipe)
+	#rList.append(recipe)
+
+	dataContext = {"recipes":rList}
+
+
+	return render(request, rootDir+'userRecipes.html',context=dataContext)
 
 def dashboard(request):
-    return render(request, rootDir+"dashboard.html")
+	user = request.user
+	uId = user.id
+	print(uId)
+	return render(request, rootDir+"dashboard.html")
+
+def socialLogin(request):
+    return render(request, rootDir+"socialLogin.html")
+
+
+def fitbitPage(request):
+	'''
+	CLIENT_ID="22CDBH"
+	CLIENT_SECRET="6dd214dc3a8a395ca629e5106c23dc92"
+	ACCESS_TOKEN = str(server.fitbit.client.session.token['access_token'])
+	REFRESH_TOKEN = str(server.fitbit.client.session.token['refresh_token'])
+	auth2_client = fitbit.Fitbit(CLIENT_ID, CLIENT_SECRET, oauth2=True, access_token=ACCESS_TOKEN, refresh_token=REFRESH_TOKEN)
+	'''
+	#unauth_client = fitbit.Fitbit('22CDBH', '6dd214dc3a8a395ca629e5106c23dc92',access_token='d8d36c86af31471d1487f1f7044eebde93e5f31e')
+	#unauth_client.food_units()
+	return render(request, rootDir+"fitbitPage.html")
 
 def register(request):
     if request.method == "GET":
@@ -141,7 +205,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             
-            login(request, user)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             
             return redirect(reverse("dashboard"))
         else:
@@ -195,5 +259,35 @@ def recipeOverview(request,recipeId):
 
 	contextRecipe = {"recipe":recipe}
 
+	#print(contextRecipe)
+
 
 	return render(request, rootDir+'recipe.html', context=contextRecipe)
+
+#removes user saved recipe
+def removeRecipe(request,recipeId):
+	user = request.user
+	uId = user.id
+	profile = Profile.objects.get(user=uId)
+	recipeObj = dbRecipe.objects.get(r_ID=recipeId)
+	profile.saved_recipes.remove(recipeObj)
+	return redirect(reverse("dashboard"))
+
+#adds recipe to entire database/users favorites
+#TODO dont add if allrady present in their favorires/ dont readd to aggregate databse if already present 
+def addRecipe(request,recipeId,recipeName):
+	user = request.user
+	uId = user.id
+	exists = dbRecipe.objects.get(r_ID = recipeId)
+	if exists:
+		newRecipe = exists
+	else:
+		newRecipe = dbRecipe.objects.create(r_ID = recipeId, name = recipeName)
+
+	if uId != None:
+		profile = Profile.objects.get(user=uId)
+		profile.saved_recipes.add(newRecipe)
+
+
+	return redirect(reverse("dashboard"))
+	

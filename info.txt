@@ -17,7 +17,9 @@ Installation steps:
 Running (remember to activate virtual enviroment!!)
 
 	Run the Server:
-		$ python manage.py runserver
+		
+		# python manage.py runsslserver --certificate cert.pem --key key.pem
+
 
 
 Deploying to AWS via Elastic Beanstalk:

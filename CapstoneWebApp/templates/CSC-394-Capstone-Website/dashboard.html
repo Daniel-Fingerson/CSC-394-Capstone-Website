@@ -1,22 +1,53 @@
 <!--users/templates/users/dashboard.html-->
 
-{% extends 'CapstonewebApp/base_generic.html' %}
+{% extends 'CSC-394-Capstone-Website/base_generic.html' %}
 
 {% block content %}
 Hello, {{ user.username|default:'Guest' }}!
 
 <b>
 Note that this will be a dashboard of the user's general profile
+{% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
 
 <div>
     {% if user.is_authenticated %}
         <a href="{% url 'logout' %}">Logout</a>
         <a href="{% url 'password_change' %}">Change password</a>
+        <div>
+        	<h2>My Recipes</h2>
+        	<a href="{% url 'userRecipeList' %}">View Saved Recipes</a>
+        	<br>
+        	
+
+	
+		</div>
+
+		<div>
+        	<h2>My Fridge</h2>
+        	<a>Yet to be implemented beyond Admin</a>
+        	<br>
+        	
+
+	
+		</div>
+
+
+		<div>
+        	<h2>My Health</h2>
+        	<a>Yet to be implemented beyond Admin</a>
+        	<br>
+        	
+        	
+
+	
+		</div>
     {% else %}
         <a href="{% url 'login' %}">Login</a>
         <a href="{% url 'register' %}">Create an Account</a>
     {% endif %}
 </div>
+
+
 {% endblock %}
 
 
