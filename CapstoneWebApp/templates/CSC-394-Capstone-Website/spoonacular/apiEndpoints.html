@@ -1,0 +1,13 @@
+
+
+{% extends 'CSC-394-Capstone-Website/base.html' %}
+{% load static %}
+{% block title %} Index Page {% endblock %}
+{% block body %}
+{% block content %}
+
+<a href="{% url 'login' %}">Login</a>
+<a href="{% url 'register' %}">Create an Account</a>
+
+{% endblock %}
+{% endblock %}

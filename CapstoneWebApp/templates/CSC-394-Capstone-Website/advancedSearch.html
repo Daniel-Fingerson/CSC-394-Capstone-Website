@@ -1,0 +1,142 @@
+{% extends 'CSC-394-Capstone-Website/base.html' %}
+
+{% block title %} Recipes searcher {% endblock %}
+{% block body %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+ul li {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: inline;
+  position: relative;
+}
+
+
+
+ul li:hover {
+  background-color: #eee;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  padding: 2px 6px;
+  transform: translate(0%, -100%);
+}
+
+.close:hover {background: #bbb;}
+</style>
+
+
+
+<h2>Closable List Items</h2>
+<p>Click on the "x" symbol to the right of the list item to close/hide it.</p>
+
+
+     
+        
+
+&nbsp;
+
+<span id="close" class="close">&times;</span>
+
+<ul id = "listitems">
+  
+  <li>Apple<span class="close">&times;</span></li>
+
+  <li>Beef<span class="close">&times;</span></li>
+  <li>Flour<span class="close">&times;</span></li>
+
+  <li>Rice<span class="close">&times;</span></li>
+  <li>Vinegar<span class="close">&times;</span></li>
+  <li>Rice Vinegar<span class="close">&times;</span></li>
+  
+</ul>
+
+&nbsp;
+
+<div>
+    <label for="ingredients">Ingredients</label>
+    <input type="text" name="ingredients" id="ingredients">
+    <div id="itembutton"> <button onclick="appendList()">Add</button></div>
+</div>
+
+<script>
+    $(function () {
+        $("#ingredients").autocomplete({
+            source: ['test','test1','test2'],
+            //source: ['taa','t','testtt2'],
+            minLength: 2
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+<script>
+  
+  function appendList() {
+    var ul = document.getElementById('listitems');
+    var li = document.createElement('li');
+    var item = document.getElementById('ingredients');
+    var textNode = document.createTextNode(item.value);
+    //textNode.append("<span class='close'>&times;</span>");
+    //textNode.innerHTML += '<span class="close">&times;</span>'
+    //textNode.innerHTML += '<span class="close">&times;</span>'
+    li.appendChild(textNode);
+    li.innerHTML += '<span class="close">&times;</span>'
+    //li.append("<span class='close'>&times;</span>")
+
+    ul.appendChild(li);
+}
+</script>
+
+
+
+
+<script>
+  $("ul").on('click', 'span', function(event){
+    var ul = document.getElementById('listitems');
+    var parent = event.target.parentNode;
+    var query = parent.innerHTML;
+    ul.querySelectorAll('li').forEach(function(item) {
+    if (item.innerHTML == query)
+      item.remove();
+  });
+    //ul.remove(parent)
+    //parent.style.display = 'none';
+    //alert(parent.innerHTML);
+    
+});
+</script>
+
+
+
+
+{% endblock %}

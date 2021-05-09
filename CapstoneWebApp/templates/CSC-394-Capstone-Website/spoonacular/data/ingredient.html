@@ -1,0 +1,28 @@
+{% extends 'CSC-394-Capstone-Website/base.html' %}
+{% block title %} {{ ingredient.name }} {% endblock %}
+{% block body %}
+
+<div style="max-width: 70%; margin: auto; padding-top:3%">
+  <div class="media">
+  	<h1>
+      {{ingredient.name}} <br>
+      
+
+    </h1>
+    
+
+
+      
+      <div class="media-body">
+        <h5 class="mt-0">{{ ingredient.name }}</h5>
+        {{ingredient.nutrition | safe}}
+        <h4>Possible Substitute Ingredients</h4>
+        {{ingredient.subs | safe}}
+        
+      </div>
+  </div><br>
+  
+</div>
+
+
+{% endblock %}

@@ -1,17 +1,60 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Untitled Document</title>
-</head>
+{% extends 'CSC-394-Capstone-Website/base.html' %}
 
 
-<h2> Hello CSC394 Blue Group. You're at the group's index page </h2>
-{% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
+{% block title %} Index Page {% endblock %}
+{% block body %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+{% include "CSC-394-Capstone-Website/navbar.html" %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-6 pb-4">
+      <h1 class="display-4 font-weight-bold">CSC394 Blue Group</h1>
+      <h5>Project Homepage</h5>
+      <div class = "row">
+      <a class="btn btn-primary mt-2">{% include "CSC-394-Capstone-Website/modal/modalBase.html" %}</a>
+	<a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    	Collapsable Elemeb nt
+  	</a>
+	</div>
+<div class="collapse" id="collapseExample">
+  <div class="card card-body">
+    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+  </div>
+</div>
+
+    </div>
+    
+  </div>
+</div>
+
+<div class="container-fluid">
+<div></div>
+<h1 class="display-5 "> Powered by Python and Spoonacular </h1>
+
+<a href="https://spoonacular.com/api/docs/recipes-api"> 
+  <img src="{% static "images/spoonacular-api.png" %}" alt="My image" /> 
+</a> 
+
+<div>
+<h1 class="display-5 "> API Overview </h1>
+<img src="{% static "images/Spoonacular-API-1.png" %}" alt="My image" href= "https://spoonacular.com/api/docs/recipes-api" />
+</div>
+
+<div></div>
+<h1 class="display-5 "> Ontology </h1>
+<img src="{% static "images/ontology2.png" %}" alt="My image"/>
+
+<div></div>
+<h1> Recipe Ingredient Widget (Provided by Spoonacular.com) </h1>
+<img src="{% static "images/spoonacular-ingredient-widget.png" %}" alt="My image"/>
+
+</div>
 
 
+{% include "CSC-394-Capstone-Website/sideBar.html" %}
 
+{% endblock %}
 
-
-<body>
-</body>
-</html>

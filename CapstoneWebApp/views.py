@@ -18,11 +18,56 @@ import datetime
 from django.http import HttpResponse
 
 import requests
-import spoonacular as sp
+#custom spoonacular API from PyPy rewritten to accomodate more endpoints
+import CapstoneWebApp.spoonacular.api as sp
+#import spoonacular as sp
 api = sp.API("e49afb82519a407db4b10de35ddf7252")
 
+from CapstoneWebApp.classes import ComplexSearch
 
 
+
+cuisineDefs = [
+"African","American",
+"British",
+"Cajun","Caribbean","Chinese",
+"Eastern European","European",
+"French",
+"German","Greek"
+"Indian","Irish","Italian",
+"Japanese","Jewish",
+"Korean",
+"Latin American",
+"Mediterranean","Mexican","Middle Eastern",
+"Nordic",
+"Southern","Spanish",
+"Thai",
+"Vietnamese"
+]
+
+dietDefs = [
+"Gluten Free",
+"Ketogenic",
+"Vegetarian",
+"Lacto-Vegetarian",
+"Ovo-Vegetarian",
+"Vegan",
+"Pescetarian",
+"Paleo",
+"Primal",
+"Whole30"
+]
+
+'''
+
+propArgs = {
+'id':ingredientId,
+'amount':amount,
+'unit':unit,
+'diet':diet
+}
+
+'''
 class Recipe:
 	def __init__(self):
 		self.title = "idk"
@@ -83,9 +128,12 @@ def recipeList(request):
 	querystring = {}
 	queryLength = request.GET["queryLength"]
 	queryTags = request.GET["tags"]
+	country = request.GET["cousineCountry"]
 
 	querystring["number"] = queryLength
 	querystring["tags"] = queryTags
+
+	
 
 
 
@@ -109,19 +157,24 @@ def recipeList(request):
 
 		querystring["tags"] = "vegan"
 
-
+		ingredients = ingredients.split(",")
 		print(ingredients)
 
 
-
-		response = requests.get((url+find), headers=headers, params = querystring)
-		data = response.json()
-		print("here it is")
-		print(data)
-
-		dataContext = {"recipes": data}
-		dataContext["specialParam"] =  "Number of results shown: " + str(queryLength)
-		dataContext["ingredients"] =  ingredients
+		cs = ComplexSearch("idk")
+		cs.includeIngredients = ingredients
+		cs.number = queryLength
+		cs.cuisine = country
+		cs.type = queryTags
+		#cs.includeIngredients = ingredients
+		#print(ingredients)
+		#cs.includeIngredients = cs.queryStr
+		searchKwgs = cs.search()
+		response = cs.api.search_recipes_complex(**searchKwgs)
+		res = response.json()
+		
+		dataContext = res
+		
 
 		#print(data)
 		#print('that was a dict')
@@ -130,13 +183,18 @@ def recipeList(request):
 
 	#Case 2: nothing submitted
 	else:
+		cs = ComplexSearch("idk")
+		cs.cuisine = country
+		cs.type = queryTags
 
-		find = "/recipes/random"
-		querystring["specialParam"] = "Randomly Generated"
-		response = requests.get((url+find), headers=headers, params = querystring)
-		data = response.json()
-		dataContext = data
-		dataContext["specialParam"] = "(Randomly Generated) " + "Number of results shown: " + str(queryLength)
+
+		#cs.includeIngredients = ["apple","flour"]
+		searchKwgs = cs.search()
+		response = cs.api.search_recipes_complex(**searchKwgs)
+		res = response.json()
+
+		
+		dataContext = res
 		print("you submitted nothing!")
 
 		print(dataContext)
@@ -217,6 +275,46 @@ def recipeOverview(request,recipeId):
 	recipe_id = recipeId
 
 
+	
+
+	testArgs = {'id': recipe_id, 'includeNutrition': False}
+	propArgs = {'id':recipe_id}
+	response = api.get_recipe_information(**testArgs)
+	recipe_info = response.json()
+
+	#recipe_info = requests.get(url + recipe_info_endpoint, headers=recipe_headers).json()
+	#recipe = recipe_info.json()
+
+	querystring = {"defaultCss":"true", "showBacklink":"false"}
+
+	#recipe_info['inregdientsWidget'] = api.ingredientWidget(**propArgs).json()
+
+	inregdientsWidget =  api.ingredientWidget(**propArgs)
+	recipe_info['inregdientsWidget'] = inregdientsWidget.text
+
+	equipmentWidget =  api.equipmentWidget(**propArgs)
+	recipe_info['equipmentWidget'] = equipmentWidget.text
+
+	nutritionWidget = api.visualize_recipe_nutrition_by_id(**propArgs)
+	recipe_info['nutritionWidget'] = nutritionWidget.text
+
+
+	recipeObj = Recipe()
+
+	recipe = recipe_info
+
+
+	contextRecipe = {"recipe":recipe}
+
+
+
+	return render(request, rootDir+'recipe.html', context=contextRecipe)
+'''
+def recipeOverview(request,recipeId):
+	#recipe_id = request.args['id']
+	recipe_id = recipeId
+
+
 	recipe_info_endpoint = "/recipes/{0}/information".format(recipe_id)
 	ingedientsWidget = "/recipes/{0}/ingredientWidget".format(recipe_id)
 	equipmentWidget = "/recipes/{0}/equipmentWidget".format(recipe_id)
@@ -263,7 +361,7 @@ def recipeOverview(request,recipeId):
 
 
 	return render(request, rootDir+'recipe.html', context=contextRecipe)
-
+'''
 #removes user saved recipe
 def removeRecipe(request,recipeId):
 	user = request.user
@@ -278,11 +376,15 @@ def removeRecipe(request,recipeId):
 def addRecipe(request,recipeId,recipeName):
 	user = request.user
 	uId = user.id
-	exists = dbRecipe.objects.get(r_ID = recipeId)
-	if exists:
-		newRecipe = exists
-	else:
+	exists = dbRecipe.objects.filter(r_ID = recipeId, name = recipeName).exists()
+	
+
+	if exists == False:
 		newRecipe = dbRecipe.objects.create(r_ID = recipeId, name = recipeName)
+
+	else:
+		newRecipe = dbRecipe.objects.get(r_ID = recipeId, name = recipeName)
+	
 
 	if uId != None:
 		profile = Profile.objects.get(user=uId)
@@ -290,4 +392,53 @@ def addRecipe(request,recipeId,recipeName):
 
 
 	return redirect(reverse("dashboard"))
-	
+
+def spoonacularEndpoints(request):
+    return render(request, rootDir+"spoonacular/apiEndpoints.html")
+
+
+def ingredientOverview(request,ingredientId,amount=None,unit=None):
+	propArgs = {'id':ingredientId,'amount':amount, 'unit':unit}
+	args  = {'id':ingredientId}
+	response = api.get_food_information(**propArgs)
+	ingredient_info = response.json()
+
+	print(ingredient_info)
+
+	nutrition = api.singleIngredientWidget(**args)
+	ingredient_info['nutrition'] = nutrition.text
+
+	subs = api.get_ingredient_substitutes_by_id(**args)
+	subsub = subs.json()
+
+	ingredient_info['subs'] = subsub['substitutes']
+
+	#recipe_info = requests.get(url + recipe_info_endpoint, headers=recipe_headers).json()
+	#recipe = recipe_info.json()
+
+	querystring = {"defaultCss":"true", "showBacklink":"false"}
+	ingContext = {"ingredient":ingredient_info} 
+	return render(request, rootDir+"spoonacular/data/ingredient.html",context=ingContext)
+
+def advancedQuery(request):
+	response = api.autocomplete_ingredient_search(query = "app", number = 5)
+	data = response.json()
+	print(data)
+	return render(request, rootDir+'advancedSearch.html')
+
+def autocompleteIngredient(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '').capitalize()
+        print('ajax term ' + q)
+        search_qs = dbRecipe.objects.filter(name__startswith=q)
+        results = []
+        print(q)
+        for r in search_qs:
+            results.append(r.name)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+        print('hmmm')
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+

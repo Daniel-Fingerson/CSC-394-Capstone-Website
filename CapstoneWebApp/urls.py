@@ -11,9 +11,8 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('recipes/', views.recipeList, name='recipeList'),
     path('recipe/<int:recipeId>/', views.recipeOverview, name='recipeOverview'),
-
-    
-
+    path('advancedSearch/', views.advancedQuery, name='advancedQuery'),
+    path('ajax_calls/IngredientSearch/', views.autocompleteIngredient, name='autocompleteIngredient'),
 
 
     path('dashboard/', views.dashboard, name='dashboard'),
@@ -30,5 +29,7 @@ urlpatterns = [
 
     #TODO make it have a second url paramaater that corresponds to the user ID (not necessary for testing purposes)
     path('fitbitPage/', views.fitbitPage, name='fitbitPage'),
+    
+    path('spoonacularEndpoints/', views.spoonacularEndpoints, name='spoonacularEndpoints'),
     
 ]

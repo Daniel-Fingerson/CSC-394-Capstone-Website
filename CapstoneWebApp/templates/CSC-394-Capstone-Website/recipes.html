@@ -5,22 +5,18 @@
 <h5> <a href="/">Return to Index Page</a></h5>
 <h5> <a href="/search">Return to Search Page</a></h5>
 <h2 style="text-align: center"> <a href="/" style="text-decoration: none; color:red"> Recipe results: </a></h2>
-<h3 style="text-align: center"> <a href="/" style="text-decoration: none; color:green"> {{specialParam}}: </a></h3>
-<h3 style="text-align: center"> <a href="/" style="text-decoration: none; color:green"> {{ingredients}} </a></h3>
+
 
 <div style="margin-left:35%;">
   <ul class="list-unstyled">
-      {% for recipe in recipes %}
+      {% for recipe in results %}
           <li class="media">
               <img src="{{recipe.image}}" class="align-self-center mr-3" alt="..." width="15%" height="15%">
               <div class="media-body">
                   <h5 class="mt-0 mb-1"><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></h5>
 
 
-                      Number of likes: {{recipe.likes}}  <br>
-
-                      Number of selected ingridients present: {{recipe.usedIngredientCount}} <br>
-                      Number of missing ingredients: {{recipe.missedIngredientCount}}  <br>
+                      
 
 
               </div>

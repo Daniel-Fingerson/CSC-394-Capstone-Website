@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {% block title %}<title>Local Library</title>{% endblock %}
-</head>
-<body>
+{% extends 'CSC-394-Capstone-Website/base.html' %}
+{% block title %}User Base{% endblock %}
+
+{% block body %}
   {% block sidebar %}<!-- insert default navigation text for every page -->{% endblock %}
   {% block content %}<!-- default content text (typically empty) -->{% endblock %}
-</body>
-</html>
+{% endblock %}
