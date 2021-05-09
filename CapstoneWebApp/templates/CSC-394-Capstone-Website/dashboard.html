@@ -1,6 +1,7 @@
 <!--users/templates/users/dashboard.html-->
 
 {% extends 'CSC-394-Capstone-Website/base.html' %}
+{% load static %}
 {% block body %}
 {% block content %}
 Hello, {{ user.username|default:'Guest' }}!

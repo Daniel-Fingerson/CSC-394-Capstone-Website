@@ -1,51 +1,11 @@
 {% extends 'CSC-394-Capstone-Website/base.html' %}
-
+{% load static %}
 {% block title %} Recipes searcher {% endblock %}
 {% block body %}
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-<style>
-* {
-  box-sizing: border-box;
-}
 
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-
-}
-
-ul li {
-  border: 1px solid #ddd;
-  margin-top: -1px; /* Prevent double borders */
-  background-color: #f6f6f6;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 18px;
-  color: black;
-  display: inline;
-  position: relative;
-}
-
-
-
-ul li:hover {
-  background-color: #eee;
-}
-
-.close {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  right: 0%;
-  padding: 2px 6px;
-  transform: translate(0%, -100%);
-}
-
-.close:hover {background: #bbb;}
-</style>
 
 
 
