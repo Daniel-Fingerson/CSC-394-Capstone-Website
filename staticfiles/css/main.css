@@ -4,6 +4,14 @@ selectors). */
   box-sizing: border-box;
 }
 
+header
+{background-color: #ffffff;
+  background-image: url('images/logo.png');
+   background-repeat: no-repeat;
+  background-position: left;
+  height: 90px;
+}
+
 ul {
   list-style-type: none;
   padding: 0;

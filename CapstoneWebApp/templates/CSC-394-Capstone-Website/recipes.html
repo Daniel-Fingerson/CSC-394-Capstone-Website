@@ -2,13 +2,20 @@
 {% load static %}
 {% block title %} Recipes searcher {% endblock %}
 {% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
-{% block body %}
-<h5> <a href="/">Return to Index Page</a></h5>
-<h5> <a href="/search">Return to Search Page</a></h5>
-<h2 style="text-align: center"> <a href="/" style="text-decoration: none; color:red"> Recipe results: </a></h2>
+{% block content %}
+<style>
+    a, a:hover {
+      color: #959497; 
+    }
+    h6{
+        text-align:right; 
+    }
+  </style>
+<h6> <a href="/search">Return to Search Page</a></h6>
+<h2> Recipe results:</h2>
 
 
-<div style="margin-left:35%;">
+<div style="margin-left:10%;">
   <ul class="list-unstyled">
       {% for recipe in results %}
           <li class="media">
@@ -16,13 +23,9 @@
               <div class="media-body">
                   <h5 class="mt-0 mb-1"><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></h5>
 
-
-                      
-
-
               </div>
           </li> <br>
       {% endfor %}
   </ul>
 </div >
-{% endblock %}
+{% endblock content %}

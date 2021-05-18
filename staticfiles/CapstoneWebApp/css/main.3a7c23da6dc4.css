@@ -1,0 +1,70 @@
+/* Applies to the entire body of the HTML document (except where overridden by more specific
+selectors). */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto&display=swap');;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif
+}
+
+header
+{background-color: #ffffff;
+   background-repeat: no-repeat;
+  background-position: left;
+  height: 60px;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Montserrat', sans-serif
+}
+
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+}
+
+ul li {
+  border: 1px solid #ddd;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+  display: inline;
+  position: relative;
+}
+
+
+
+ul li:hover {
+  background-color: #eee;
+}
+
+.close {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  padding: 2px 6px;
+  transform: translate(0%, -100%);
+}
+
+.close:hover {background: #bbb;}
+
+
+
+/* Applies to all elements with <... class="someclass"> specified. */
+.someclass { color: red; }
+
+/* Applies to the element with <... id="someid"> specified. */
+#someid { color: green; }
+
+/* Applies to the <div id="imageExample"> element from the example in the HTML section. */
+div#imageExample { float: right; }
+

@@ -2,18 +2,26 @@
 {% load static %}
 {% block title %} Recipes searcher {% endblock %}
 {% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
-{% block body %}
-
-<div style="margin-left:35%;">
+{% block content %}
+<style>
+  a, a:hover {
+    color: #959497; 
+  }
+</style>
+<h1>Your saved recipes:</h1>
+<div style="margin-left:10%;">
   <ul class="list-unstyled">
       {% for recipe in recipes %}
-          
-          <h5><a href="/recipe/{{ recipe.id }}">{{ recipe.name }}</a></h5>
-          <h5><a href="/recipe/remove/{{ recipe.id }}">Remove</a></h5>
-          <br>
+        <li class= "media">
+          <img src="https://spoonacular.com/recipeImages/{{ recipe.id }}-90x90.jpg" class="align-self-center mr-3" alt="..." width="5%" height="5%">
+          <div class="media-body">
+            <h5 class="mt-0 mb-1"><a href="/recipe/{{ recipe.id }}">{{ recipe.name }}</a></h5>
+            <h6 style= "font-size: small;"><a href="/recipe/remove/{{ recipe.id }}">Remove</a></h5>
+          </div>
+        </li> <br>
        {% empty %}
     <li>Sorry, no recipes saved for this user.</li>
       {% endfor %}
   </ul>
 </div >
-{% endblock %}
+{% endblock content%}

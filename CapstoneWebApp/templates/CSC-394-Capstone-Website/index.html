@@ -2,10 +2,7 @@
 {% load static %}
 
 {% block title %} Index Page {% endblock %}
-{% block body %}
-
-
-{% include "CSC-394-Capstone-Website/navbar.html" %}
+{% block content %}
 
 
 <div class="container-fluid">
@@ -25,36 +22,9 @@
   </div>
 </div>
 
-    </div>
-    
-  </div>
-</div>
-
-<div class="container-fluid">
-<div></div>
-<h1 class="display-5 "> Powered by Python and Spoonacular </h1>
-
-<a href="https://spoonacular.com/api/docs/recipes-api"> 
-  <img src="{% static "images/spoonacular-api.png" %}" alt="My image" /> 
-</a> 
-
-<div>
-<h1 class="display-5 "> API Overview </h1>
-<img src="{% static "images/Spoonacular-API-1.png" %}" alt="My image" href= "https://spoonacular.com/api/docs/recipes-api" />
-</div>
-
-<div></div>
-<h1 class="display-5 "> Ontology </h1>
-<img src="{% static "images/ontology2.png" %}" alt="My image"/>
-
-<div></div>
-<h1> Recipe Ingredient Widget (Provided by Spoonacular.com) </h1>
-<img src="{% static "images/spoonacular-ingredient-widget.png" %}" alt="My image"/>
-
-</div>
 
 
-{% include "CSC-394-Capstone-Website/sideBar.html" %}
 
-{% endblock %}
+
+{% endblock content %}
 

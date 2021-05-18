@@ -1,28 +1,27 @@
 {% extends 'CSC-394-Capstone-Website/base.html' %}
 {% load static %}
 {% block title %} {{ recipe.title }} {% endblock %}
-{% block body %}
+{% block content %}
 
-<div style="max-width: 70%; margin: auto; padding-top:3%">
-  <div class="media">
+<div style="max-width: 80%; margin: auto; padding-top:3%">
+
   	<h1>
-      {{recipe.title}} <br>
-      Total Time: {{recipe.readyInMinutes}} minutes <br>
-
+      {{recipe.title}} 
     </h1>
+    <h3>
+      Total Time: {{recipe.readyInMinutes}} minutes 
+    </h3>
     <h5><a href="/recipe/add/{{ recipe.id }}/{{ recipe.title }}">Save Recipe</a></h5> <br>
 
 
       <img src="{{recipe.image}}" class="mr-3" alt="..." width="20%" height="20%">
-      <div class="media-body">
-        <h5 class="mt-0">{{ recipe.title }}</h5>
-        {{recipe.instructions}}
-      </div>
-  </div><br>
+       <p>{{recipe.instructions}}</p> 
+
   {{recipe.nutritionWidget | safe}}<br>
   {{recipe.equipmentWidget | safe}}
   {{recipe.inregdientsWidget | safe }}
-</div>
+  </div>
 
 
-{% endblock %}
+
+{% endblock content %}

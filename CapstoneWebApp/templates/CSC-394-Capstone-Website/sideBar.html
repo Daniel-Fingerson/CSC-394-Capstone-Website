@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -22,18 +23,20 @@ p {
 }
 
 a, a:hover, a:focus {
-    color: inherit;
+    color: #959497;
     text-decoration: none;
     transition: all 0.3s;
 }
 
 .navbar {
     padding: 15px 10px;
-    background: #fff;
+    color: #91B889;
+    background: #ffffff;
     border: none;
     border-radius: 0;
     margin-bottom: 40px;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    min-height:80px; 
 }
 
 .navbar-btn {
@@ -54,6 +57,7 @@ a, a:hover, a:focus {
 ----------------------------------------------------- */
 
 .wrapper {
+    color: #91B889;
     display: flex;
     width: 100%;
     align-items: stretch;
@@ -64,8 +68,8 @@ a, a:hover, a:focus {
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: #7386D5;
-    color: #fff;
+    background: #ffffff;
+    color: #959497;
     transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
     transform-origin: bottom left;
 }
@@ -76,13 +80,12 @@ a, a:hover, a:focus {
 }
 
 #sidebar .sidebar-header {
-    padding: 20px;
-    background: #6d7fcc;
+    padding: 10px;
+    background: #ffffff;
 }
 
 #sidebar ul.components {
-    padding: 20px 0;
-    border-bottom: 1px solid #47748b;
+    padding: 10px;
 }
 
 #sidebar ul p {
@@ -91,18 +94,19 @@ a, a:hover, a:focus {
 }
 
 #sidebar ul li a {
+    color: #91B889;
     padding: 10px;
     font-size: 1.1em;
     display: block;
 }
 #sidebar ul li a:hover {
-    color: #7386D5;
+    color: #959497;
     background: #fff;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+    color: #91B889;
+    background: #ffffff;
 }
 
 
@@ -121,7 +125,7 @@ a[data-toggle="collapse"] {
 ul ul a {
     font-size: 0.9em !important;
     padding-left: 30px !important;
-    background: #6d7fcc;
+    background: #ffffff
 }
 
 ul.CTAs {
@@ -144,6 +148,10 @@ a.download {
 a.article, a.article:hover {
     background: #6d7fcc !important;
     color: #fff !important;
+}
+
+.dropdown-menu {
+    float:right; 
 }
 
 
@@ -233,7 +241,6 @@ a.article, a.article:hover {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
     <title>Collapsible sidebar using Bootstrap 4</title>
 
     <!-- Bootstrap CSS CDN -->
@@ -253,23 +260,35 @@ a.article, a.article:hover {
         <!-- Sidebar Holder -->
         <nav id="sidebar">
             <div class="sidebar-header">
-                <h3>Bootstrap Sidebar</h3>
+                <h3>Menu</h3>
             </div>
 
             <ul class="list-unstyled components">
-                <p>Dummy Heading</p>
                 <li class="active">
+                    <a href="/search">Search Page</a>
+                </li>
+                <li>
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
+
+                    {% if user.is_authenticated %}
                         <li>
-                            <a href="#">Home 1</a>
+                            <a href="{% url 'dashboard' %}">User Home Page</a>
                         </li>
                         <li>
-                            <a href="#">Home 2</a>
+                            <a href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="{% url 'login' %}">Sign in</a>
                         </li>
                         <li>
-                            <a href="#">Home 3</a>
+                            <a href="{% url 'register' %}">Create account</a>
                         </li>
+                        <li>
+                            <a href="/admin">Admin</a>
+                        </li>
+                    {% endif %}
                     </ul>
                 </li>
                 <li>
@@ -288,21 +307,18 @@ a.article, a.article:hover {
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Portfolio</a>
-                </li>
-                <li>
                     <a href="#">Contact</a>
                 </li>
             </ul>
 
-            <ul class="list-unstyled CTAs">
+            <!-- <ul class="list-unstyled CTAs">
                 <li>
                     <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
                 </li>
                 <li>
                     <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
                 </li>
-            </ul>
+            </ul> -->
         </nav>
 
         <!-- Page Content Holder -->
@@ -319,22 +335,30 @@ a.article, a.article:hover {
                     <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
                     </button>
+                    <a class="navbar-brand" href="#"><img src="{% static 'CapstoneWebApp/images/logo.png' %}" height= "84.5" width = "250" alt=""></a>
 
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav ml-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Page</a>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                        {% if user.is_authenticated %}
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{user.username}}
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                            </div>
                             </li>
                         </ul>
+                        <form class="form-inline my-2 my-lg-0"  action="#" method='GET'>
+                            <input class="form-control mr-sm-2" type="search" name='q' aria-label="Search" placeholder='Search' value={{request.GET.q}}  >
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                        {% else %}
+                        
+                        <a class="btn btn-outline-secondary" href="{% url 'login' %}">Login</a>
+                        <a class="btn btn-primary ml-2 mr-2" href="{% url 'register' %}">Register</a>  
+                
+                        {% endif %}
                     </div>
                 </div>
             </nav>

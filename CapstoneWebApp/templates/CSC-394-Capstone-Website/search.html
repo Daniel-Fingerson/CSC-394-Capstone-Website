@@ -1,40 +1,83 @@
 {% extends 'CSC-394-Capstone-Website/base.html' %}
 {% load static %}
 {% block title %} Recipes searcher {% endblock %}
-{% block body %}
+{% block content %}
+<style>
+.cover{
+  min-height: 100vh;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  font-family: 'Poppins', sans-serif;
+  background: url('/static/CapstoneWebApp/images/nav-background.jpeg');
+  background-size: cover;
+  background-position: center center;
+  padding: 15px;
+}
+
+</style>
 
 <center>
-  <h2 style="padding-top: 3%;">
-      Search for recipes based off your available ingredients:  <br>
-  </h2>
-  {% include "CSC-394-Capstone-Website/modal/modalBase.html" %}
-  <br><br>
-  <form action="/recipes">
-      <div class="input-group mb-3" style="max-width: 60%;">
-
-          <input type="text" class="form-control" placeholder="Apple, flour, sugar (Leave Blank to randomly generate)" aria-label="Ingredients" aria-describedby="button-addon2" name="ingredients">
-
-          <input type="number" class="form-control" placeholder="10 (default)" aria-label="QueryLength" aria-describedby="button-addon2" name="queryLength">
-
-          <input type="text" class="form-control" placeholder="Italian" aria-label="cousineCountry" aria-describedby="button-addon2" name="cousineCountry">
-
-          
-
-          <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+  <div class="cover">
+    <div class="container mt-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-10">
+          <div class="card p-3 py-4" style="background: rgba(255, 255, 255, 0.75);">
+            <h5 style= "font-size: 150%">Search for recipes based off your available ingredients:</h5>
+            <form action="/recipes">
+              <div class="input-group mb-3">
+                <div class="row g-3 mt-2">
+                  <div class="col-md-9"><input type="text" class="form-control" placeholder="Enter ingredients"
+                      aria-label="Ingredients" aria-describedby="button-addon2" name="ingredients">
+                    <small id="ingredientHelp" class="form-text text-muted">e.g. apple, flour, sugar (Leave Blank to
+                      randomly generate).</small>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="input-group-append">
+                      <button class="btn btn-secondary btn-block" type="submit" id="button-addon2">Search</button>
+                    </div>
+                  </div>
+                  <div class="mt-4"> <a data-toggle="collapse" href="#collapseExample" role="button"
+                      aria-expanded="false" aria-controls="collapseExample" class="advanced"> Advanced Search With
+                      Filters <i class="fa fa-angle-down"></i> </a>
+                    <div class="col d-flex justify-content-center">
+                      <div class="collapse " id="collapseExample">
+                        <div class="card card-body ">
+                          <div class="row">
+                            <div class="col-md-4"> <input type="number" class="form-control"
+                                placeholder="Enter number of recipes returned" aria-label="QueryLength"
+                                aria-describedby="button-addon2" name="queryLength">
+                              <small id="queryHelp" class="form-text text-muted">Limit number of recipes
+                                returned.</small>
+                            </div>
+                            <div class="col-md-4"> <input type="text" class="form-control" placeholder="Enter cuisine"
+                                aria-label="cousineCountry" aria-describedby="button-addon2" name="cousineCountry">
+                            </div>
+                            <div class="col-md-4"> <input type="text" class="form-control" placeholder="Enter meal type"
+                                aria-label="Tags" aria-describedby="button-addon2" name="tags">
+                              <small id="mealTypeHelp" class="form-text text-muted">e.g. dessert, appetizer</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
-
-
+        </div>
       </div>
-
-<div>
-  <input type="text" class="form-control" placeholder="Refine search by meal type (lmit one word) (example: dessert,vegetarian,salads ) " aria-label="Tags" aria-describedby="button-addon2" name="tags">
-</div>
-  </form>
-  <div>
-  <h5> <a href="/">Return to Index Page</a></h5>
-</div>
+    </div>
+    <div>
+  </div>
+  </div>
 </center>
 
 
-{% endblock %}
+
+
+{% endblock content %}
