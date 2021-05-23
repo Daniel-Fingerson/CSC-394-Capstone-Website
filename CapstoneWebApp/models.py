@@ -24,7 +24,6 @@ class Recipe(models.Model):
 	r_ID = models.IntegerField(max_length=6, primary_key=True)
 	name = models.CharField(max_length=128)
 	
-
 	def __str__(self):
 		return str(self.name)
 
@@ -35,42 +34,46 @@ class Ingredient(models.Model):
 	price = models.DecimalField(null=True,blank=True,decimal_places=2,max_digits=6)
 	recipes = models.ManyToManyField(Recipe)
 
-
-#TODO make this dissapear with a depenacy relationship (althoug this is sucesfully linking all use cases I can think of)
-class QuantityPerRecipe(models.Model):
-	recipe = models.ForeignKey(Recipe,on_delete=models.CASCADE)
-	ingredient = models.ForeignKey(Ingredient,on_delete=models.CASCADE)
-	quantity = models.IntegerField()
+	def __str__(self):
+		return(self.name)
 
 
+class Diet(models.Model):
+	#d_ID = models.IntegerField(max_length=6, primary_key=True)
+	name = models.CharField(max_length=64)
+	description = models.CharField(max_length=1024,null=True,blank=True)
 
+
+	def __str__(self):
+		return(self.name)
+
+class Intolerance(models.Model):
+	#i_ID = models.IntegerField(max_length=6, primary_key=True)
+	name = models.CharField(max_length=64)
+	description = models.CharField(max_length=1024,null=True,blank=True)
+
+	def __str__(self):
+		return(self.name)
 
 
 #TODO add a "In My Fridge" feature. Will help with meal plans
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    middle_name = models.CharField(max_length=30, blank=True)
+    middle_name = models.CharField(max_length=30, blank=True, null = True)
     dob = models.DateField(null=True, blank=True)
 
     #need to  consider different countries/ metrics
     weight = models.DecimalField(null = True, blank = True,decimal_places=2,max_digits=6)
     height = models.DecimalField(null = True, blank = True,decimal_places=2,max_digits=3)
 
-    saved_recipes = models.ManyToManyField(Recipe)
+    saved_recipes = models.ManyToManyField(Recipe, blank = True, null = True,symmetrical=False)
+
+    diet = models.ForeignKey(Diet, on_delete=models.PROTECT, blank = True, null = True)
+    intolerances = models.ManyToManyField(Intolerance, blank = True, null = True)
+    dislikedFoods = models.ManyToManyField(Ingredient, blank = True, null = True)
 
     def __str__(self):
-    	return(self.user.username + "; First Name: " + self.user.first_name)
-
-    
+    	return(self.user.username + " First Name: " + self.user.first_name)
 
 
-
-class FridgeItem(models.Model):
-	#consider potentially saving a meal itself in the fridge
-	ingredient = models.ForeignKey(Ingredient,on_delete=models.CASCADE)
-	owner = models.ForeignKey(Profile,on_delete=models.CASCADE)
-	quantity = models.IntegerField(max_length=4)
-	
-
-	purchaseDate = models.DateTimeField(null = True, blank = True)

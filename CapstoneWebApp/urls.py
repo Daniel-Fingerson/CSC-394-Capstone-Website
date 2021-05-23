@@ -24,6 +24,11 @@ urlpatterns = [
     path('register/', views.register, name='register'),
 
     path('accounts/', include('django.contrib.auth.urls')),
+
+    path('userPrefs/', views.prefPage, name = 'preferences'),
+    path('userMeal/', views.prefPage, name = 'mealPlan'),
+    path('userShop/', views.prefPage, name = 'shoppingList'),
+
     path('social-auth/', include('social_django.urls', namespace="social")),
     path('social-login/', views.socialLogin, name='socialLogin'),
 

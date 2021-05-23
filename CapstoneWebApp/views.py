@@ -99,6 +99,15 @@ def test(request):
 def dashboard(request):
     return render(request, rootDir+"dashboard.html")
 
+def prefPage(request):
+    return render(request, rootDir+"prefs.html")
+
+def mealPlan(request):
+    return render(request, rootDir+"mealPlan.html")
+
+def shoppingList(request):
+    return render(request, rootDir+"shoppingList.html")
+
 def register(request):
     if request.method == "GET":
         return render(
@@ -110,8 +119,9 @@ def register(request):
 
         if form.is_valid():
             user = form.save()
-
+            newProfile = Profile.objects.create(user = user)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            
 
             return redirect(reverse("dashboard"))
         else:
@@ -251,23 +261,7 @@ def fitbitPage(request):
 	#unauth_client.food_units()
 	return render(request, rootDir+"fitbitPage.html")
 
-def register(request):
-    if request.method == "GET":
-        return render(
-            request, rootDir+"register.html",
-            {"form": RegisterForm}
-        )
-    elif request.method == "POST":
-        form = RegisterForm(request.POST)
-        
-        if form.is_valid():
-            user = form.save()
-            
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            
-            return redirect(reverse("dashboard"))
-        else:
-        	return HttpResponse("Form failed to validate (usually indicitve of invalid password)...make a proper redirect")
+
 
 #Detailed overview of recipe
 def recipeOverview(request,recipeId):

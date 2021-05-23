@@ -19,35 +19,12 @@ Note that this will be a dashboard of the user's general profile
         <br>
 
         <div class="row">
-            <h2 class>Recipes</h2>
+            <h2 class>Prefs</h2>
             <a href="{% url 'userRecipeList' %}">View Saved Recipes</a>
             <br>    
         </div>
 
-        <br>
-
-        <div class = "row">
-            <h2>Meal Plans</h2>
-            <a href="{% url 'mealPlan' %}">View/Generate Meal Plan</a>
-            <br>
-        </div>
-
-        <br>
-
-        <div class = "row">
-            <h2>Shopping Lists</h2>
-            <a href="{% url 'shoppingList' %}">View/Generate Grocery List</a>
-            <br>
-        </div>
-
-        <br>
-
-
-        <div class = "row">
-            <h2>Preferences</h2>
-            <a href="{% url 'preferences' %}">View My Preferences</a>
-            <br>
-        </div>
+        
 
 
     {% else %}
