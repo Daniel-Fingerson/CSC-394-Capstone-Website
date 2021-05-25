@@ -289,6 +289,15 @@ class API(object):
         url_params = {"defaultCss":"true", "showBacklink":"false"}
         return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
 
+    def priceWidget(self, id, defaultCss=None):
+        """ Visualize a recipe's nutrition data.
+            https://spoonacular.com/food-api/docs#visualize-recipe-nutrition-by-id
+        """
+        endpoint = "recipes/{id}/priceBreakdownWidget".format(id=id)
+        url_query = {}
+        url_params = {"defaultCss":"true", "showBacklink":"false"}
+        return self._make_request(endpoint, method="GET", query_=url_query, params_=url_params)
+
     def singleIngredientWidget(self, id, defaultCss=None):
         """ Visualize a recipe's nutrition data.
             https://spoonacular.com/food-api/docs#visualize-recipe-nutrition-by-id

@@ -1,10 +1,11 @@
 {% extends 'CSC-394-Capstone-Website/base.html' %}
 {% load static %}
-{% block content %}
+{% block title %} Recipes searcher {% endblock %}
+{% block body %}
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
-
 
 
 
@@ -34,19 +35,18 @@
 
 &nbsp;
 
-<div>
+<form>
     <label for="ingredients">Ingredients</label>
     <input type="text" name="ingredients" id="ingredients">
     <div id="itembutton"> <button onclick="appendList()">Add</button></div>
-</div>
+</form>
+
 
 <script>
     $(function () {
         $("#ingredients").autocomplete({
-            //source: ['test','test1','test2'],
-            source: "{% url 'autocompleteIngredient' %}",
-            //source: ['taa','t','testtt2'],
-            minLength: 1
+            source: ['test','test1','test2'],
+            minLength: 2
         });
     });
 </script>
@@ -99,4 +99,4 @@
 
 
 
-{% endblock content %}
+{% endblock %}

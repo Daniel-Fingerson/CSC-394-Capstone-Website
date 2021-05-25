@@ -3,6 +3,8 @@
 {% block title %} {{ recipe.title }} {% endblock %}
 {% block content %}
 
+<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script> 
+
 <div style="max-width: 80%; margin: auto; padding-top:3%">
 
   	<h1>
@@ -14,12 +16,23 @@
     <h5><a href="/recipe/add/{{ recipe.id }}/{{ recipe.title }}">Save Recipe</a></h5> <br>
 
 
-      <img src="{{recipe.image}}" class="mr-3" alt="..." width="20%" height="20%">
+      <img src="{{recipe.image}}" class="mr-3" alt="..." width="25%" height="25%">
        <p>{{recipe.instructions}}</p> 
 
+  <h3>Nutritional Overview </h3>
   {{recipe.nutritionWidget | safe}}<br>
+
+    <h3>Price Overview </h3>
+  {{recipe.priceeWidget | safe }}
+
+  <h3>Cookware Overview </h3>
   {{recipe.equipmentWidget | safe}}
+
+  <h3>Individual Ingredient Overview </h3>
   {{recipe.inregdientsWidget | safe }}
+
+
+
   </div>
 
 

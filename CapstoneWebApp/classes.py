@@ -13,6 +13,7 @@ class ComplexSearch:
 		self.includeIngredients = None
 		self.diet = None
 		self.type = None
+		self.intolerances = None
 
 	def search(self):
 		propArgs = {
@@ -20,6 +21,7 @@ class ComplexSearch:
 		'cuisine':self.cuisine,
 		'number':self.number,
 		'diet':self.diet,
+		'intolerances':self.intolerances,
 		'type':self.type,
 		'includeIngredients':self.includeIngredients
 		}

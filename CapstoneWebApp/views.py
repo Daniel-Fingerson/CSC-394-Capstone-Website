@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from CapstoneWebApp.forms import RegisterForm
+from CapstoneWebApp.forms import RegisterForm, UserPref
 from django.contrib.auth import login
 from django.urls import reverse
 
@@ -13,6 +13,7 @@ import fitbit
 import CapstoneWebApp.gather_keys_oauth2 as Oauth2
 import pandas as pd 
 import datetime
+import re
 
 # Create your views here.
 from django.http import HttpResponse
@@ -100,7 +101,19 @@ def dashboard(request):
     return render(request, rootDir+"dashboard.html")
 
 def prefPage(request):
-    return render(request, rootDir+"prefs.html")
+	user = request.user
+	uId = user.id
+	profile = Profile.objects.get(user=uId)
+	form = UserPref(request.POST or None,instance=profile) 
+	if form.is_valid():
+		instance = form.save()
+		#ßinstance.user = request.user
+		instance.save() 
+		return redirect(reverse("dashboard"))
+	context = { 
+		"form":form
+		}
+	return render(request, rootDir+"prefs.html",context=context)
 
 def mealPlan(request):
     return render(request, rootDir+"mealPlan.html")
@@ -145,8 +158,17 @@ def recipeList(request):
 
 	
 
+	cs = ComplexSearch("search")
 
+	
+	if request.user.is_authenticated:
+		user = request.user
+		uId = user.id
+		profile = Profile.objects.get(user=uId)
+		cs.diet = profile.diet
+		cs.intolerances = profile.intolerances
 
+	
 	if request.GET.get('ingredients'):
 		print("you did it!")
 
@@ -165,13 +187,12 @@ def recipeList(request):
 
 		querystring["ingredients"] = ingredients
 
-		querystring["tags"] = "vegan"
+		#querystring["tags"] = "vegan"
 
-		ingredients = ingredients.split(",")
+		ingredients = re.split(', |_|-|!.', ingredients)
 		print(ingredients)
 
 
-		cs = ComplexSearch("idk")
 		cs.includeIngredients = ingredients
 		cs.number = queryLength
 		cs.cuisine = country
@@ -180,27 +201,26 @@ def recipeList(request):
 		#print(ingredients)
 		#cs.includeIngredients = cs.queryStr
 		searchKwgs = cs.search()
-		response = cs.api.search_recipes_complex(**searchKwgs)
+		response = api.search_recipes_complex(**searchKwgs)
 		res = response.json()
 		
 		dataContext = res
 		
 
-		#print(data)
+		#print(dataContext)
 		#print('that was a dict')
 		#print(data)
 		#print(len(data))
 
 	#Case 2: nothing submitted
 	else:
-		cs = ComplexSearch("idk")
 		cs.cuisine = country
 		cs.type = queryTags
 
 
 		#cs.includeIngredients = ["apple","flour"]
 		searchKwgs = cs.search()
-		response = cs.api.search_recipes_complex(**searchKwgs)
+		response = api.search_recipes_complex(**searchKwgs)
 		res = response.json()
 
 		
@@ -273,7 +293,7 @@ def recipeOverview(request,recipeId):
 
 	testArgs = {'id': recipe_id, 'includeNutrition': False}
 	propArgs = {'id':recipe_id}
-	response = api.get_recipe_information(**testArgs)
+	response = api.get_recipe_information(**propArgs)
 	recipe_info = response.json()
 
 	#recipe_info = requests.get(url + recipe_info_endpoint, headers=recipe_headers).json()
@@ -291,6 +311,12 @@ def recipeOverview(request,recipeId):
 
 	nutritionWidget = api.visualize_recipe_nutrition_by_id(**propArgs)
 	recipe_info['nutritionWidget'] = nutritionWidget.text
+
+	priceWidget = api.priceWidget(**propArgs)
+	priceMet = priceWidget.text
+	recipe_info['priceeWidget'] = priceMet
+	#print(priceMet)
+	print('ok')
 
 
 	recipeObj = Recipe()
@@ -415,24 +441,43 @@ def ingredientOverview(request,ingredientId,amount=None,unit=None):
 	return render(request, rootDir+"spoonacular/data/ingredient.html",context=ingContext)
 
 def advancedQuery(request):
-	response = api.autocomplete_ingredient_search(query = "app", number = 5)
-	data = response.json()
-	print(data)
+	#response = api.autocomplete_ingredient_search(query = "app", number = 5)
+	#data = response.json()
+	#print(data)
 	return render(request, rootDir+'advancedSearch.html')
 
 def autocompleteIngredient(request):
     if request.is_ajax():
         q = request.GET.get('term', '').capitalize()
         print('ajax term ' + q)
-        search_qs = dbRecipe.objects.filter(name__startswith=q)
+        response = api.autocomplete_ingredient_search(query = q, number = 5)
+        result = response.json()
         results = []
-        print(q)
-        for r in search_qs:
-            results.append(r.name)
+        for key in result:
+        	results.append(key['name'])
         data = json.dumps(results)
+
     else:
         data = 'fail'
         print('hmmm')
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+
+def autocompleteRecipe(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '').capitalize()
+        print('ajax term ' + q)
+        search_qs = dbRecipe.objects.filter(name__startswith=q)
+        results = []
+        print(q)
+
+        for r in search_qs:
+            results.append(r.name)
+        data = json.dumps(results)
+        print(data)
+    else:
+        data = 'fail'
+        print('hmmm')
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)

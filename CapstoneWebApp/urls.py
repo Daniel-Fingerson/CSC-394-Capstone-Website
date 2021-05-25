@@ -12,7 +12,9 @@ urlpatterns = [
     path('recipes/', views.recipeList, name='recipeList'),
     path('recipe/<int:recipeId>/', views.recipeOverview, name='recipeOverview'),
     path('advancedSearch/', views.advancedQuery, name='advancedQuery'),
+    
     path('ajax_calls/IngredientSearch/', views.autocompleteIngredient, name='autocompleteIngredient'),
+    path('ajax_calls/RecipeSearch/', views.autocompleteRecipe, name='autocompleteRecipe'),
 
 
     path('dashboard/', views.dashboard, name='dashboard'),
