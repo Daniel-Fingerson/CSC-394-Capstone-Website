@@ -2,7 +2,11 @@ from django.contrib import admin
 from CapstoneWebApp.models import Recipe,Ingredient,Profile, Diet, Intolerance
 
 
-# Register your models here.
+# Registers models so that they can be manually edited via Django's built in admin page
+# Note that this page is only acessible after manually creating an admin user (via command line utility manage.py)
+# 	Ex: $python manage.py createsuperuser
+
+
 class RecipeAdmin(admin.ModelAdmin):
 	pass
     

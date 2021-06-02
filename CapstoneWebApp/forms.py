@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from .models import Intolerance, Diet, Profile
 
 
+#Forms defined here can be natively rendered via Django's template tags
+#Allows for user input that directly maps to Django models/any backend logic
+
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
 
